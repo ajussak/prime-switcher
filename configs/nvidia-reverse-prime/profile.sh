@@ -1,1 +1,0 @@
-../nvidia/profile.sh

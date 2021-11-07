@@ -17,8 +17,8 @@ msgstr "Project-Id-Version: \n"
 "Language: be_BY\n"
 
 #: gui.py:33
-msgid "Performance"
-msgstr "Прадукцыйны"
+msgid "Balanced"
+msgstr "Збалансаваны "
 
 #: gui.py:33
 msgid "Power Saving"

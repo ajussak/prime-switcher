@@ -16,7 +16,7 @@ msgstr ""
 
 
 #: gui.py:33
-msgid "Performance"
+msgid "Balanced"
 msgstr ""
 
 #: gui.py:33

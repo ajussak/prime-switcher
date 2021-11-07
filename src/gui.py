@@ -1,7 +1,7 @@
 import gi
 
 import utils
-import switchers
+import switcher
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -42,9 +42,9 @@ def switch(widget, *data):
     data[int(not success)].show()
 
 
-def open_gui(switcher: switchers.Switcher):
+def open_gui():
     """Create and display the indicator"""
-    modes_names = [_('Power Saving'), _('Performance')]
+    modes_names = [_('Power Saving'), _('Balanced')]
 
     # Notifications Declaration BEGIN
     Notify.init("Prime Switcher")
@@ -59,25 +59,23 @@ def open_gui(switcher: switchers.Switcher):
     # Menu BEGIN
     menu = Gtk.Menu()
 
-    item = Gtk.MenuItem(_('Switch to {} mode').format(modes_names[int(not switcher.get_discrete_gpu_state())]))
+    is_powersaved = switcher.is_powersaved()
+
+    item = Gtk.MenuItem(_('Switch to {} mode').format(modes_names[int(not is_powersaved)]))
     item.connect('activate', switch, success_notify, error_notify,
-                 switchers.modes[int(not switcher.get_discrete_gpu_state())])
+                 switcher.modes[int(is_powersaved)])
     menu.append(item)
 
     menu.append(Gtk.SeparatorMenuItem())
 
-    current_mode = Gtk.MenuItem(_('Current Mode : {}').format(modes_names[int(switcher.get_discrete_gpu_state())]))
+    current_mode = Gtk.MenuItem(_('Current Mode : {}').format(modes_names[int(is_powersaved)]))
     current_mode.set_sensitive(False)
     menu.append(current_mode)
-
-    gpu_name = Gtk.MenuItem(switcher.get_current_gpu_name())
-    gpu_name.set_sensitive(False)
-    menu.append(gpu_name)
 
     # Menu END
 
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, os.path.join(
-        utils.get_debug_path('assets') if os.getenv('DEBUG', 0) else '/usr/share/prime-switcher/', switcher.get_icon()),
+        utils.get_debug_path('assets') if os.getenv('DEBUG', 0) else '/usr/share/prime-switcher/', "intel.png" if is_powersaved else "nvidia.png"),
                                            appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator.set_menu(menu)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)

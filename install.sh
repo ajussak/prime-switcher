@@ -16,5 +16,3 @@ ln -s /usr/lib/prime-switcher/__main__.py /usr/bin/prime-switcher
 
 cd locales
 find . -name '*.mo' -exec cp --parents \{\} /usr/share/locale/ \;
-
-prime-switcher -D -s power-saving;

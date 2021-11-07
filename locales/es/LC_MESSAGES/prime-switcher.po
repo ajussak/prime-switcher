@@ -15,8 +15,8 @@ msgstr ""
 
 
 #: gui.py:33
-msgid "Performance"
-msgstr "Desempeño"
+msgid "Balanced"
+msgstr "Equilibrado"
 
 #: gui.py:33
 msgid "Power Saving"

@@ -1,8 +1,5 @@
 import subprocess
 import os
-import re
-import gpu
-from typing import List
 from typing import Dict
 
 
@@ -19,28 +16,6 @@ def get_debug_path(path: str) -> str:
 def get_config_filepath(file: str) -> str:
     """Concatenate config folder path and given path"""
     return os.path.join(get_debug_path('configs') if os.getenv('DEBUG', 0) else '/etc/prime-switcher/', file)
-
-
-def get_gpu_list() -> List[gpu.GPU]:
-    """Get list of GPU detected by the system (lspci)"""
-    data = execute_command('lspci').lower()
-    reg = re.compile(r'(vga|display|hdmi|3d)')
-    gpu_list = []
-    for device in data.split('\n'):
-        if reg.search(device):
-            de = re.search(r'([^ ]*).*:\s*([^ ]*)', device)
-            if de:
-                has_screen = re.search(r'(vga|display|hdmi)', device)
-                pci_id = de.group(1).replace('.', ':')
-
-                brand = de.group(2)
-
-                # Fix (Alternative name for AMD Cards)
-                if brand == 'advanced':
-                    brand = 'amd'
-
-                gpu_list.append(gpu.GPU(pci_id, bool(has_screen), brand))
-    return gpu_list
 
 
 def replace_in_file(src: str, dst: str, correlations: Dict[str, str]) -> None:
